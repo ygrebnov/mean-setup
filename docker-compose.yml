@@ -1,0 +1,32 @@
+version: '3.5'
+services:
+  mongo:
+    image: mongo
+    container_name: mean-mongo
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
+    volumes:
+      - mongo-volume:/data/db
+    networks:
+      - mean-network
+    
+  node:
+    image: ygrebnov/node-angularcli:latest
+    container_name: mean-node
+    tty: true
+    restart: unless-stopped
+    ports:
+      - "44120:8080"
+    volumes:
+      - node-volume:/usr/src/app
+    networks:
+      - mean-network
+
+volumes:
+  mongo-volume:
+  node-volume:
+networks:
+  mean-network:
+    driver: bridge
